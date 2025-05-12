@@ -1,27 +1,16 @@
-"use client";
-
-import { z } from "zod";
 import { Button } from "../_components/ui/button";
+import { ComboboxOption } from "../_components/ui/combobox";
 import { Sheet, SheetTrigger } from "../_components/ui/sheet";
+import { getProducts } from "../_data-access/product/get-products";
 import UpserSheetContent from "./_components/upsert-sheet-content";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
 
-const formSchema = z.object({
-  productId: z.string().uuid(),
-  quantity: z.number().int().positive(),
-});
-
-type FormSchema = z.infer<typeof formSchema>;
-
-const SalesPage = () => {
-  const form = useForm<FormSchema>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      productId: "",
-      quantity: 1,
-    },
-  });
+const SalesPage = async () => {
+  const products = await getProducts();
+  // *Tratamendo dos dados no servidor
+  const productOptions: ComboboxOption[] = products.map((product) => ({
+    label: product.name,
+    value: product.id,
+  }));
 
   return (
     <div className="m-8 w-full space-y-8 rounded-lg bg-white p-8">
@@ -37,7 +26,10 @@ const SalesPage = () => {
           <SheetTrigger asChild>
             <Button>Nova Venda</Button>
           </SheetTrigger>
-          <UpserSheetContent />
+          <UpserSheetContent
+            products={products}
+            productOptions={productOptions}
+          />
         </Sheet>
       </div>
 
