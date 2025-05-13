@@ -34,6 +34,7 @@ import { PlusIcon } from "lucide-react";
 import { useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import SalesTableDropdownMenu from "./table-dropdown-menu";
 
 const formSchema = z.object({
   productId: z.string().uuid({
@@ -82,6 +83,7 @@ const UpserSheetContent = ({
       const existingProduct = currentProducts.find(
         (product) => product.id === selectedProduct.id
       );
+
       if (existingProduct) {
         return currentProducts.map((product) => {
           if (product.id === selectedProduct.id) {
@@ -90,6 +92,7 @@ const UpserSheetContent = ({
               quantity: product.quantity + data.quantity,
             };
           }
+
           return product;
         });
       }
@@ -112,6 +115,12 @@ const UpserSheetContent = ({
       return total + product.price * product.quantity;
     }, 0);
   }, [selectedProducts]);
+
+  const onDelete = (productId: string) => {
+    setSelectedProducts((currentProducts) => {
+      return currentProducts.filter((product) => product.id !== productId);
+    });
+  };
 
   return (
     <SheetContent className="!max-w-[700px]">
@@ -186,6 +195,9 @@ const UpserSheetContent = ({
               <TableCell>
                 {formatCurrency(product.price * product.quantity)}
               </TableCell>
+              <TableCell>
+                <SalesTableDropdownMenu product={product} onDelete={onDelete} />
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>
@@ -193,6 +205,7 @@ const UpserSheetContent = ({
           <TableRow>
             <TableCell colSpan={3}>Total</TableCell>
             <TableCell>{formatCurrency(productsTotal)}</TableCell>
+            <TableCell></TableCell>
           </TableRow>
         </TableFooter>
       </Table>
