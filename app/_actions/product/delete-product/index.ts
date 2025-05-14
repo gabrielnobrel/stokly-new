@@ -15,3 +15,15 @@ export const deleteProduct = actionClient
     });
     revalidatePath("/products");
   });
+
+// export const deleteProduct = async ({ id }: DeleProductSchema) => {
+//   deleteProductSchema.parse({ id });
+
+//   await db.product.delete({
+//     where: {
+//       id,
+//     },
+//   });
+
+//   revalidatePath("/products");
+// };
