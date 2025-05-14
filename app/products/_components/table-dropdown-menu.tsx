@@ -41,6 +41,7 @@ const ProductTableDropDownMenu = ({
               <MoreHorizontalIcon size={16} />
             </Button>
           </DropdownMenuTrigger>
+
           <DropdownMenuContent>
             <DropdownMenuLabel>Ações</DropdownMenuLabel>
             <DropdownMenuSeparator />
@@ -79,6 +80,7 @@ const ProductTableDropDownMenu = ({
             setEditDialogIsOpen(false);
           }}
         />
+
         <DeleteProductDialogContent productId={product.id} />
       </Dialog>
     </AlertDialog>

@@ -8,6 +8,8 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/app/_components/ui/alert-dialog";
+import { flattenValidationErrors } from "next-safe-action";
+import { useAction } from "next-safe-action/hooks";
 import { toast } from "sonner";
 
 interface DeleteProducDialogContentProps {
@@ -17,14 +19,25 @@ interface DeleteProducDialogContentProps {
 const DeleteProductDialogContent = ({
   productId,
 }: DeleteProducDialogContentProps) => {
-  const handleContinueClick = async () => {
-    try {
-      await deleteProduct({ id: productId });
+  const { execute: executeDeleteProduct } = useAction(deleteProduct, {
+    onSuccess: () => {
       toast.success("Produto excluído com sucesso!");
-    } catch (error) {
-      console.error("Error deleting product:", error);
-      toast.error("Erro ao excluir o produto. Tente novamente.");
-    }
+    },
+    onError: () => {
+      toast.error("Ocorreu um erro ao excluir o produto.");
+    },
+  });
+
+  const handleContinueClick = () => {
+    // try {
+    //   await deleteProduct({ id: productId });
+    //   toast.success("Produto excluído com sucesso!");
+    // } catch (error) {
+    //   console.error("Error deleting product:", error);
+    //   toast.error("Erro ao excluir o produto. Tente novamente.");
+    // }
+
+    executeDeleteProduct({ id: productId });
   };
 
   return (
