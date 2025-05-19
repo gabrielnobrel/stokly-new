@@ -4,16 +4,16 @@ import { Badge } from "@/app/_components/ui/badge";
 import { ColumnDef } from "@tanstack/react-table";
 import { CircleIcon } from "lucide-react";
 import ProductTableDropDownMenu from "./table-dropdown-menu";
-import { Product } from "@prisma/client";
+import { ProductDto } from "@/app/_data-access/product/get-products";
 
-const getStatusLabel = (stock: number) => {
-  if (stock > 0) {
+const getStatusLabel = (status: string) => {
+  if (status === "IN_STOCK") {
     return "Em Estoque";
   }
   return "Esgotado";
 };
 
-export const productTableColumn: ColumnDef<Product>[] = [
+export const productTableColumn: ColumnDef<ProductDto>[] = [
   {
     accessorKey: "name",
     header: "Produto",
@@ -38,7 +38,7 @@ export const productTableColumn: ColumnDef<Product>[] = [
     header: "Status",
     cell: (row) => {
       const product = row.row.original;
-      const label = getStatusLabel(product.stock);
+      const label = getStatusLabel(product.status);
       return (
         <Badge
           variant={label === "Em Estoque" ? "default" : "outline"}
