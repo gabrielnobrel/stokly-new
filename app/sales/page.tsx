@@ -1,8 +1,12 @@
 import { ComboboxOption } from "../_components/ui/combobox";
+import { DataTable } from "../_components/ui/data-table";
 import { getProducts } from "../_data-access/product/get-products";
+import { getSales } from "../_data-access/sale/get-sale";
 import CreateSaleButton from "./_components/create-sale-button";
+import { saleTableColumns } from "./_components/table-columns";
 
 const SalesPage = async () => {
+  const sales = await getSales();
   const products = await getProducts();
   // *Tratamendo dos dados no servidor
   const productOptions: ComboboxOption[] = products.map((product) => ({
@@ -24,11 +28,10 @@ const SalesPage = async () => {
         <CreateSaleButton products={products} productOptions={productOptions} />
       </div>
 
-      {/* 
       <DataTable
-        columns={productTableColumn}
-        data={JSON.parse(JSON.stringify(products))}
-      /> */}
+        columns={saleTableColumns}
+        data={JSON.parse(JSON.stringify(sales))}
+      />
     </div>
   );
 };

@@ -25,6 +25,7 @@ import {
 } from "@/app/_components/ui/form";
 import { Input } from "@/app/_components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { exec } from "child_process";
 import { Loader2Icon } from "lucide-react";
 import { useAction } from "next-safe-action/hooks";
 import { Dispatch, SetStateAction } from "react";
@@ -74,13 +75,14 @@ const UpsertProductDialogContent = ({
   //   executeUpsertProduct(data);
   // };
 
+  const onSubmit = (data: UpsertProductSchema) => {
+    executeUpsertProduct({ ...data, id: defaultValues?.id });
+  };
+
   return (
     <DialogContent>
       <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit(executeUpsertProduct)}
-          className="space-y-8"
-        >
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           <DialogHeader>
             <DialogTitle>{isEditing ? "Editar" : "Criar"} produto</DialogTitle>
             <DialogDescription>Insira as informações abaixo</DialogDescription>
