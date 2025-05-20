@@ -30,7 +30,6 @@ import {
 } from "@/app/_components/ui/table";
 import { formatCurrency } from "@/app/_helpers/currency";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Product } from "@prisma/client";
 import { CheckIcon, PlusIcon } from "lucide-react";
 import { Dispatch, SetStateAction, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -38,8 +37,9 @@ import { z } from "zod";
 import UpsertSalesTableDropdownMenu from "./upsert-table-dropdown-menu";
 import { toast } from "sonner";
 import { useAction } from "next-safe-action/hooks";
-import { createSale } from "@/app/_actions/sale/create-sale";
+import { upsertSale } from "@/app/_actions/sale/create-sale/upsert-sale";
 import { flattenValidationErrors } from "next-safe-action";
+import { ProductDto } from "@/app/_data-access/product/get-products";
 
 const formSchema = z.object({
   productId: z.string().uuid({
@@ -50,12 +50,6 @@ const formSchema = z.object({
 
 type FormSchema = z.infer<typeof formSchema>;
 
-interface UpserSheetContentProps {
-  products: Product[];
-  productOptions: ComboboxOption[];
-  setSheetIsOpen: Dispatch<SetStateAction<boolean>>;
-}
-
 interface SelectedProduct {
   id: string;
   name: string;
@@ -63,16 +57,26 @@ interface SelectedProduct {
   quantity: number;
 }
 
+interface UpserSheetContentProps {
+  saleId?: string;
+  products: ProductDto[];
+  productOptions: ComboboxOption[];
+  setSheetIsOpen: Dispatch<SetStateAction<boolean>>;
+  defaultSelectedProduct?: SelectedProduct[];
+}
+
 const UpserSheetContent = ({
+  saleId,
   products,
   productOptions,
   setSheetIsOpen,
+  defaultSelectedProduct,
 }: UpserSheetContentProps) => {
   const [selectedProducts, setSelectedProducts] = useState<SelectedProduct[]>(
-    []
+    defaultSelectedProduct ?? []
   );
 
-  const { execute: executeCreateSale } = useAction(createSale, {
+  const { execute: executeCreateSale } = useAction(upsertSale, {
     onError: ({ error: { validationErrors, serverError } }) => {
       const flattenedErrors = flattenValidationErrors(validationErrors);
       toast.error(serverError ?? flattenedErrors.formErrors[0]);
@@ -163,7 +167,7 @@ const UpserSheetContent = ({
 
   const onSubmitSale = async () => {
     // try {
-    //   await createSale({
+    //   await upsertSale({
     //     products: selectedProducts.map((product) => ({
     //       id: product.id,
     //       quantity: product.quantity,
@@ -178,6 +182,7 @@ const UpserSheetContent = ({
     // }
 
     executeCreateSale({
+      id: saleId,
       products: selectedProducts.map((product) => ({
         id: product.id,
         quantity: product.quantity,
