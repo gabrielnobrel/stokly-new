@@ -13,7 +13,12 @@ export const deleteProduct = actionClient
         id,
       },
     });
-    revalidatePath("/products");
+    // revalidatePath("/products");
+    // revalidatePath("/");
+    // revalidatePath("/sales");
+
+    // Revalidar toda a aplicação
+    revalidatePath("/", "layout");
   });
 
 // export const deleteProduct = async ({ id }: DeleProductSchema) => {
