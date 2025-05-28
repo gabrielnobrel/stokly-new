@@ -17,7 +17,8 @@ import {
 } from "./_components/summary-card";
 import { getDashboard } from "../_data-access/dashboard/get-dashboard";
 import { formatCurrency } from "../_helpers/currency";
-import RevenueChart from "./_components/revenue-chart";
+import ReveneuChart from "./_components/revenue-chart";
+import MostSoldProductItem from "../_data-access/dashboard/most-sold-product-item";
 
 const Home = async () => {
   const {
@@ -27,10 +28,11 @@ const Home = async () => {
     totalStock,
     totalLast14DaysRevenue,
     totalProducts,
+    mostSoldProducts,
   } = await getDashboard();
 
   return (
-    <div className="m-8 flex w-full flex-col space-y-8 rounded-lg">
+    <div className="flex flex-col w-full m-8 space-y-8 rounded-lg">
       <Header>
         <HeaderLeft>
           <HeaderSubtitle>Visão geral dos dados</HeaderSubtitle>
@@ -82,15 +84,24 @@ const Home = async () => {
         </SummaryCard>
       </div>
 
-      <div className="flex h-full flex-col overflow-hidden rounded-xl bg-white p-6">
-        <div className="div mb-2 fle h-9 w-9 items-center justify-center rounded-md bg-esmerald-500 bg-opacity-10">
-          <DollarSign className="text-emerald-500" />
+      <div className=" grid min-h-0 grid-cols-[minmax(0,2.5fr),minmax(0,1fr)] gap-6">
+        <div className="flex flex-col h-full p-6 overflow-hidden bg-white rounded-xl">
+          <p className="text-lg font-semibold text-slate-900">Receita</p>
+          <p className="text-sm text-slate-400">Últimos 14 dias</p>
+
+          <ReveneuChart data={totalLast14DaysRevenue} />
         </div>
 
-        <p className="text-lg font-semibold text-slate-900">Receita</p>
-        <p className="text-sm text-slate-400">Últimos 14 dias</p>
-
-        <ReveneuChart data={totalLast14DaysRevenue} />
+        <div className="flex flex-col h-full overflow-hidden bg-white rounded-xl">
+          <p className="px-6 pt-6 text-lg font-semibold text-slate-900">
+            Produtos mais vendidos
+          </p>
+          <div className="px-6 pb-6 mt-6 overflow-y-auto space-y-7">
+            {mostSoldProducts.map((product) => (
+              <MostSoldProductItem key={product.productId} product={product} />
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   );

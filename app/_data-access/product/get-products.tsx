@@ -3,8 +3,10 @@ import "server-only";
 import { Product } from "@prisma/client";
 import { db } from "@/app/_lib/prisma";
 
+export type ProductStatusDto = "IN_STOCK" | "OUT_OF_STOCK";
+
 export interface ProductDto extends Product {
-  status: "IN_STOCK" | "OUT_OF_STOCK";
+  status: ProductStatusDto;
 }
 
 // Pegar os produtos do banco de dados

@@ -19,9 +19,9 @@ interface RevenueChartProps {
   data: DayTotalRevenue[];
 }
 
-const ReveneuChart = ({ data }: RevenueChartProps) => {
+const RevenueChart = ({ data }: RevenueChartProps) => {
   return (
-    <ChartContainer config={chartConfig} className="min-h-0w w-full">
+    <ChartContainer config={chartConfig} className="min-h-0 w-full">
       <BarChart accessibilityLayer data={data}>
         <CartesianGrid vertical={false} />
         <XAxis
@@ -37,4 +37,4 @@ const ReveneuChart = ({ data }: RevenueChartProps) => {
   );
 };
 
-export default ReveneuChart;
+export default RevenueChart;
