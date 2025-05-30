@@ -1,3 +1,5 @@
+import "server-only";
+
 import { getTodayRevenue } from "@/app/_data-access/dashboard/get-today-revenue";
 import {
   SummaryCard,
