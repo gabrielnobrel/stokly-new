@@ -21,7 +21,7 @@ interface RevenueChartProps {
 
 const RevenueChart = ({ data }: RevenueChartProps) => {
   return (
-    <ChartContainer config={chartConfig} className="min-h-0 w-full">
+    <ChartContainer config={chartConfig} className="w-full min-h-0">
       <BarChart accessibilityLayer data={data}>
         <CartesianGrid vertical={false} />
         <XAxis
