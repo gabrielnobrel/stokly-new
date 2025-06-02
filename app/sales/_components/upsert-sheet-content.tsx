@@ -31,7 +31,7 @@ import {
 import { formatCurrency } from "@/app/_helpers/currency";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CheckIcon, PlusIcon } from "lucide-react";
-import { Dispatch, SetStateAction, useMemo, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import UpsertSalesTableDropdownMenu from "./upsert-table-dropdown-menu";
@@ -58,6 +58,7 @@ interface SelectedProduct {
 }
 
 interface UpserSheetContentProps {
+  isOpen: boolean;
   saleId?: string;
   products: ProductDto[];
   productOptions: ComboboxOption[];
@@ -66,6 +67,7 @@ interface UpserSheetContentProps {
 }
 
 const UpserSheetContent = ({
+  isOpen,
   saleId,
   products,
   productOptions,
@@ -94,6 +96,17 @@ const UpserSheetContent = ({
       quantity: 1,
     },
   });
+
+  useEffect(() => {
+    if (!isOpen) {
+      form.reset();
+      setSelectedProducts([]);
+    }
+  }, [isOpen, form]);
+
+  useEffect(() => {
+    setSelectedProducts(defaultSelectedProduct ?? []);
+  }, [defaultSelectedProduct]);
 
   const onSubmit = (data: FormSchema) => {
     const selectedProduct = products.find(
@@ -237,7 +250,7 @@ const UpserSheetContent = ({
             )}
           />
 
-          <Button className=" w-full gap-2" variant={"secondary"}>
+          <Button className="w-full gap-2 " variant={"secondary"}>
             <PlusIcon size={20} />
             Adicionar produto à venda
           </Button>
