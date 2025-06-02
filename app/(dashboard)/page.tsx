@@ -5,7 +5,6 @@ import Header, {
 } from "../_components/header";
 import { SummaryCardSkeleton } from "./_components/summary-card";
 import { getDashboard } from "../_data-access/dashboard/get-dashboard";
-import ReveneuChart from "./_components/revenue-chart";
 import MostSoldProductItem from "../_data-access/dashboard/most-sold-product-item";
 import TotalRevenueCard from "./_components/total-revenue-card";
 import { Suspense } from "react";
@@ -13,9 +12,11 @@ import TodayRevenueCard from "./_components/today-revenue";
 import TotalSalesCard from "./_components/total-sales-card";
 import TotalStockCard from "./_components/total-stock-card";
 import TotalProductsCard from "./_components/total-products-card";
+import Last14DaysRevenueCard from "./_components/last-14-day-revenue-card";
+import { Skeleton } from "../_components/ui/skeleton";
 
 const Home = async () => {
-  const { totalLast14DaysRevenue, mostSoldProducts } = await getDashboard();
+  const { mostSoldProducts } = await getDashboard();
 
   return (
     <div className="flex flex-col w-full m-8 space-y-8 rounded-lg">
@@ -51,12 +52,18 @@ const Home = async () => {
       </div>
 
       <div className=" grid min-h-0 grid-cols-[minmax(0,2.5fr),minmax(0,1fr)] gap-6">
-        <div className="flex flex-col h-full p-6 overflow-hidden bg-white rounded-xl">
-          <p className="text-lg font-semibold text-slate-900">Receita</p>
-          <p className="text-sm text-slate-400">Últimos 14 dias</p>
-
-          <ReveneuChart data={totalLast14DaysRevenue} />
-        </div>
+        <Suspense
+          fallback={
+            <Skeleton className="p-6 bg-white">
+              <div className="space-y-2">
+                <div className="w-[86.26px] rounded-md bg-gray-200 h-5" />
+                <div className="w-48 h-4 bg-gray-200 rounded-md" />
+              </div>
+            </Skeleton>
+          }
+        >
+          <Last14DaysRevenueCard />
+        </Suspense>
 
         <div className="flex flex-col h-full overflow-hidden bg-white rounded-xl">
           <p className="px-6 pt-6 text-lg font-semibold text-slate-900">
