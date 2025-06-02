@@ -4,7 +4,7 @@ export const SummaryCardIcon = ({
   children: React.ReactNode;
 }) => {
   return (
-    <div className="flex items-center justify-center mb-2 rounded-md h-9 w-9 text-emerald-500 bg-emerald-500 bg-opacity-10">
+    <div className="flex items-center justify-center mb-2 rounded-md h-9 w-9 text-slate-500 bg-slate-500 bg-opacity-10">
       {children}
     </div>
   );
