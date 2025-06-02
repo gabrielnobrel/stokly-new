@@ -13,7 +13,7 @@ const ProductsPage = async () => {
   const products = await getProducts();
 
   return (
-    <div className="m-8 w-full space-y-8 rounded-lg bg-white p-8">
+    <div className="w-full p-8 m-8 space-y-8 overflow-auto bg-white rounded-lg">
       <Header>
         <HeaderLeft>
           <HeaderSubtitle>Gestão de Produtos</HeaderSubtitle>
@@ -26,10 +26,7 @@ const ProductsPage = async () => {
       </Header>
 
       {/* TABELA */}
-      <DataTable
-        columns={productTableColumn}
-        data={JSON.parse(JSON.stringify(products))}
-      />
+      <DataTable columns={productTableColumn} data={products} />
     </div>
   );
 };
