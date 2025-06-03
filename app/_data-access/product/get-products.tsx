@@ -6,7 +6,7 @@ import { db } from "@/app/_lib/prisma";
 export type ProductStatusDto = "IN_STOCK" | "OUT_OF_STOCK";
 
 export interface ProductDto extends Product {
-  status?: ProductStatusDto;
+  status: ProductStatusDto;
 }
 
 // Pegar os produtos do banco de dados
