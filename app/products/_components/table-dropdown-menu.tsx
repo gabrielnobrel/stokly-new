@@ -20,11 +20,11 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import UpsertProductDialogContent from "./upsert-dialog-content";
-import { Product } from "@prisma/client";
 import DeleteProductDialogContent from "./delete-dialog-content";
+import { ProductDto } from "@/app/_data-access/product/get-products";
 
 interface ProductTableDropDownMenuProps {
-  product: Product;
+  product: ProductDto;
 }
 
 const ProductTableDropDownMenu = ({
