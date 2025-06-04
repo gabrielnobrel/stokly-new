@@ -17,8 +17,11 @@ export const upsertProduct = actionClient
       create: data,
     });
 
-    revalidatePath("/products", "page");
-    revalidatePath("/");
+    // revalidatePath("/products", "page");
+    // revalidatePath("/sales", "page");
+    // revalidatePath("/");
+
+    revalidatePath("/", "layout");
   });
 
 // export const upsertProduct = async (data: UpsertProductSchema) => {
